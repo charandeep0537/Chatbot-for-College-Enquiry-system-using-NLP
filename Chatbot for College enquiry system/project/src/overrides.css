@@ -1,0 +1,23 @@
+/* Style overrides for selected Tailwind utilities */
+
+/* Make primary blue backgrounds a bit darker */
+.bg-blue-600 {
+  background-color: #1e40af; /* tailwind blue-800 */
+}
+
+/* Make blue text class slightly deeper */
+.text-blue-600 {
+  color: #1d4ed8; /* tailwind blue-700 */
+}
+
+/* Increase rounding for large rounded elements */
+.rounded-xl {
+  border-radius: 1rem; /* was 0.75rem */
+}
+
+/* Stronger hover shadow */
+.hover\:shadow-lg:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.10);
+}
+
+

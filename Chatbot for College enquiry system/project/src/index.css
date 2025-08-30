@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Logo asset note: place rgm-logo.png in project/public or project root served by Vite */
+
+/* Global theme application for entire page */
+:root {
+  --brand: #ff4500; /* orangered */
+  --brand-dark: #cc3700;
+  --bg: #fff7f2; /* very light warm background */
+  --bg-2: #ffefe6; /* light orangered tint */
+  --text: #111827; /* gray-900 */
+}
+html.dark {
+  --bg: #0b0b0c;
+  --bg-2: #111113;
+  --text: #e5e7eb; /* gray-200 */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, var(--bg), var(--bg-2));
+  color: var(--text);
+}
+
+/* Force brand color accents globally */
+.text-brand { color: var(--brand); }
+.bg-brand { background-color: var(--brand); }
+.from-brand { --tw-gradient-from: var(--brand) var(--tw-gradient-from-position); --tw-gradient-to: rgb(255 69 0 / 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-brandDark { --tw-gradient-to: var(--brand-dark) var(--tw-gradient-to-position); }
+
+/* Buttons and links default hue */
+button, a {
+  accent-color: var(--brand);
+}
+
+/* Inputs focus ring brand */
+input:focus, textarea:focus, select:focus {
+  outline-color: var(--brand);
+}
