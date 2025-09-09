@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, session, send_from_directory
+from flask_cors import CORS
 import secrets
 import logging
 import os
@@ -14,7 +15,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
+CORS(app, supports_credentials=True)  # Enable CORS with credentials
 app.secret_key = secrets.token_hex(16)
+app.config['PERMANENT_SESSION_LIFETIME'] = 1800  # 30 minutes session lifetime
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 # Initialize chatbot components
 nlp_processor = NLPProcessor()
@@ -94,4 +99,17 @@ def get_suggestions():
     return jsonify({'suggestions': suggestions})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Set logging to catch any errors
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    
+    # Run the app with proper server settings
+    app.run(
+        debug=True,  # Enable debug mode for development
+        host='0.0.0.0',  # Listen on all available interfaces
+        port=5000,
+        threaded=True,  # Enable threading
+        use_reloader=True  # Enable auto-reload on code changes
+    )

@@ -15,16 +15,17 @@ export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hello! Welcome to RGM College of Engineering and Technology's inquiry system. I'm here to help you with information about admissions, courses, fees, facilities, campus life, and more. How can I assist you today?",
+      text:
+        "Hello! Welcome to RGM College of Engineering and Technology's inquiry system. I'm here to help you with information about admissions, courses, fees, facilities, campus life, and more. How can I assist you today?",
       isUser: false,
       timestamp: new Date(),
       suggestions: [
-        "Tell me about admissions",
-        "What courses do you offer?",
-        "What are the fees?",
-        "Show me campus facilities"
-      ]
-    }
+        'Tell me about admissions',
+        'What courses do you offer?',
+        'What are the fees?',
+        'Show me campus facilities',
+      ],
+    },
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
@@ -36,10 +37,10 @@ export const useChat = () => {
       id: Date.now().toString(),
       text: text.trim(),
       isUser: true,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
     try {
@@ -52,21 +53,22 @@ export const useChat = () => {
         timestamp: new Date(),
         suggestions: data.suggestions,
         intent: data.intent,
-        confidence: data.confidence
+        confidence: data.confidence,
       };
 
-      setMessages(prev => [...prev, botMessage]);
+      setMessages((prev) => [...prev, botMessage]);
       setIsConnected(true);
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        text:
+          "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
         isUser: false,
         timestamp: new Date(),
-        suggestions: ["Try again", "Contact support"]
+        suggestions: ['Try again', 'Contact support'],
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
       setIsConnected(false);
     } finally {
       setIsTyping(false);
@@ -79,27 +81,36 @@ export const useChat = () => {
       setMessages([
         {
           id: '1',
-          text: "Hello! Welcome to RGM College of Engineering and Technology's inquiry system. I'm here to help you with information about admissions, courses, fees, facilities, campus life, and more. How can I assist you today?",
+          text:
+            "Hello! Welcome to RGM College of Engineering and Technology's inquiry system. I'm here to help you with information about admissions, courses, fees, facilities, campus life, and more. How can I assist you today?",
           isUser: false,
           timestamp: new Date(),
           suggestions: [
-            "Tell me about admissions",
-            "What courses do you offer?",
-            "What are the fees?",
-            "Show me campus facilities"
-          ]
-        }
+            'Tell me about admissions',
+            'What courses do you offer?',
+            'What are the fees?',
+            'Show me campus facilities',
+          ],
+        },
       ]);
     } catch (error) {
       console.error('Error resetting conversation:', error);
     }
   }, []);
 
+  const handleSuggestionClick = useCallback(
+    (suggestion: string) => {
+      void sendMessage(suggestion);
+    },
+    [sendMessage]
+  );
+
   return {
     messages,
     isTyping,
     isConnected,
     sendMessage,
-    resetConversation
+    resetConversation,
+    handleSuggestionClick,
   };
 };
