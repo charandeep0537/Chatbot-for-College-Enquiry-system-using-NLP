@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "concurrently \"npm run dev\" \"python app.py\"",
+    "dev": "concurrently \"vite\" \".\\.venv\\Scripts\\python.exe app.py\"",
+    "start": "concurrently \"vite\" \".\\.venv\\Scripts\\python.exe app.py\"",
     "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

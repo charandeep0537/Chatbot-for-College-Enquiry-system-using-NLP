@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify, session, send_from_directory
+
 from flask_cors import CORS
 import secrets
 import logging
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 from chatbot.nlp_processor import NLPProcessor
 from chatbot.intent_classifier import IntentClassifier
 from chatbot.response_generator import ResponseGenerator
@@ -13,6 +15,12 @@ from chatbot.training_data import TRAINING_DATA
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Load environment variables from .env if present
+try:
+    load_dotenv()
+except Exception:
+    pass
 
 app = Flask(__name__, static_folder='dist', static_url_path='')
 CORS(app, supports_credentials=True)  # Enable CORS with credentials
@@ -54,7 +62,7 @@ def chat():
         # Classify intent
         intent_result = intent_classifier.classify(processed_input)
         
-        # Generate response
+        # Generate response (includes AI fallback for low confidence)
         response_data = response_generator.generate_response(
             intent_result, processed_input, session_id
         )
@@ -65,8 +73,9 @@ def chat():
         )
         
         # Log the interaction
+        response_source = response_data.get('source', 'local')
         logger.info(f"Session {session_id}: Intent={intent_result['intent']}, "
-                   f"Confidence={intent_result['confidence']:.2f}")
+                   f"Confidence={intent_result['confidence']:.2f}, Source={response_source}")
         
         return jsonify({
             'response': response_data['response'],
